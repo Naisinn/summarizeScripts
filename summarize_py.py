@@ -1,5 +1,6 @@
 import os
 import glob
+import datetime
 
 def main():
     # ユーザーに対象ディレクトリのパスを入力してもらう
@@ -16,7 +17,8 @@ def main():
     py_files = glob.glob(os.path.join(directory, "*.py"))
     
     # 出力先のMarkdownファイル名（対象ディレクトリの直下に作成）
-    output_markdown = os.path.join(directory, "summarized_py.md")
+    current_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    output_markdown = os.path.join(directory, f"summarized_py_{current_timestamp}.md")
     
     # Markdownファイルに書き出し
     with open(output_markdown, "w", encoding="utf-8") as md:
