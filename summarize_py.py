@@ -13,8 +13,8 @@ def main():
         print("指定されたパスは存在しないか、ディレクトリではありません。")
         return
 
-    # 対象ディレクトリ直下の全ての .py ファイルを取得
-    py_files = glob.glob(os.path.join(directory, "*.py"))
+    # 対象ディレクトリ以下の全ての .py ファイルを取得（再帰的検索）
+    py_files = glob.glob(os.path.join(directory, "**", "*.py"), recursive=True)
     
     # 出力先のMarkdownファイル名（対象ディレクトリの直下に作成）
     current_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -23,8 +23,9 @@ def main():
     # Markdownファイルに書き出し
     with open(output_markdown, "w", encoding="utf-8") as md:
         for py_file in py_files:
-            # ファイル名をMarkdownの見出しレベル2として記述
-            md.write(f"## {os.path.basename(py_file)}\n\n")
+            # 指定ディレクトリからの相対パスをMarkdownの見出しレベル2として記述
+            rel_path = os.path.relpath(py_file, directory)
+            md.write(f"## {rel_path}\n\n")
             # コードブロック開始
             md.write("```python\n")
             # .pyファイルの内容を書き込む
