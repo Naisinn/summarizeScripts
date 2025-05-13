@@ -47,15 +47,12 @@ def main():
     # Markdownファイルに書き出し
     with open(output_markdown, "w", encoding="utf-8") as md:
         for file_path in files:
-            # 指定ディレクトリからの相対パスをMarkdownの見出しレベル2として記述
             rel_path = os.path.relpath(file_path, directory)
             md.write(f"## {rel_path}\n\n")
-            # コードブロック開始
             md.write(f"```{code_lang}\n")
-            # ファイルの内容を書き込む
-            with open(file_path, "r", encoding="utf-8") as file:
+            # errors="replace" を指定して、デコードエラーが出ても置換して読み込む
+            with open(file_path, "r", encoding="utf-8", errors="replace") as file:
                 md.write(file.read())
-            # コードブロックの終了
             md.write("\n```\n\n")
     
     print(f"{len(files)}個の.{ext}ファイルの内容を '{output_markdown}' にまとめました。")
